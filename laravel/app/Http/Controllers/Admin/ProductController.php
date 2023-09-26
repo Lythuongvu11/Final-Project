@@ -14,17 +14,19 @@ use Storage;
 class ProductController extends Controller
 {
     protected $product;
+
     public function __construct(Product $product)
     {
-        $this->product=$product;
+        $this->product = $product;
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 50);
-        $query=$this->product->latest('id');
+        $query = $this->product->latest('id');
         // Search functionality
         $search = $request->input('search');
         if ($search) {
@@ -32,11 +34,11 @@ class ProductController extends Controller
                 ->orWhere('description', 'like', "%$search%");
         }
 
-        $products=$query->paginate($perPage);
+        $products = $query->paginate($perPage);
 //        return response()->json([
 //            'products'=>$products,
 //        ]);
-        return view('admin.products.index',compact('products','search'));
+        return view('admin.products.index', compact('products', 'search'));
     }
 
     /**
@@ -87,9 +89,9 @@ class ProductController extends Controller
     public function edit(string $id)
 
     {
-        $product=$this->product->findOrFail($id);
+        $product = $this->product->findOrFail($id);
         return response()->json([
-            'product'=>$product,
+            'product' => $product,
         ]);
 //        return view('admin.products.edit', compact('product'));
     }
@@ -97,10 +99,10 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, String $id)
+    public function update(Request $request, string $id)
     {
         $validatedData = $request->all();
-        $product=$this->product->findOrFail($id);
+        $product = $this->product->findOrFail($id);
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('public/product_images');
             $imagePath = str_replace('public/', '', $imagePath);
@@ -129,7 +131,7 @@ class ProductController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $selectedProductIds =  $request->input('products', []);
+        $selectedProductIds = $request->input('products', []);
         if (!empty($selectedProductIds)) {
             $selectedProducts = Product::whereIn('id', $selectedProductIds)->get();
 
@@ -137,12 +139,13 @@ class ProductController extends Controller
                 Storage::delete('public/' . $product->image);
                 $product->delete();
             }
-                return response()->json(['message' => 'Delete success']);
+            return response()->json(['message' => 'Delete success']);
 //            return redirect()->route('products.index')->with('message', 'Selected products have been deleted.');
         }
-            return response()->json(['message' => 'No products selected for deletion.']);
+        return response()->json(['message' => 'No products selected for deletion.']);
 //        return redirect()->route('products.index')->with('message', 'No products selected for deletion.');
     }
+
     public function showdata(Request $request)
     {
         $query = Product::query();

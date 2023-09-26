@@ -16,8 +16,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles=Role::latest('id')->paginate(5);
-        return view('admin.roles.index',compact('roles'));
+        $roles = Role::latest('id')->paginate(5);
+        return view('admin.roles.index', compact('roles'));
     }
 
     /**
@@ -25,8 +25,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions=Permisson::all()->groupBy('group');
-        return view('admin.roles.create',compact('permissions'));
+        $permissions = Permisson::all()->groupBy('group');
+        return view('admin.roles.create', compact('permissions'));
     }
 
     /**
@@ -34,9 +34,9 @@ class RoleController extends Controller
      */
     public function store(CreateRoleRequest $request)
     {
-        $dataCreate=$request->all();
-        $dataCreate['guard_name']='web';
-        $role=Role::create($dataCreate);
+        $dataCreate = $request->all();
+        $dataCreate['guard_name'] = 'web';
+        $role = Role::create($dataCreate);
         $role->permissions()->attach($dataCreate['permission_ids']);
         return response()->json(['message' => 'Create success']);
 //        return redirect()->route('roles.index')->with(['message'=>'Create success']);
@@ -47,7 +47,7 @@ class RoleController extends Controller
      */
     public function showdata()
     {
-        $roles=Role::get();
+        $roles = Role::get();
         return $roles;
     }
 
@@ -68,7 +68,7 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $role = Role::findOrFail($id);
-        $dataUpdate=$request->all();
+        $dataUpdate = $request->all();
         $role->update($dataUpdate);
         $role->permissions()->sync($dataUpdate['permission_ids']);
         return to_route('roles.index')->with(['message' => 'Update success']);

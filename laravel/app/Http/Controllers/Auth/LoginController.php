@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
+
     public function showLoginForm()
     {
         return view('client.auth.login');
@@ -31,14 +32,16 @@ class LoginController extends Controller
         }
 
 
-        return redirect()->route('login')->with(['message'=> 'Invalid credentials. Please try again.']);
+        return redirect()->route('login')->with(['message' => 'Invalid credentials. Please try again.']);
     }
+
     public function logout(Request $request)
     {
         Auth::guard('web')->logout();
 
         return redirect('/login');
     }
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller

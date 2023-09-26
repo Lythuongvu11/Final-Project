@@ -200,6 +200,7 @@ class CartController extends Controller
 
         return response()->json(['message' => 'Cart updated successfully.']);
     }
+
     public function getCartAfterLogin()
     {
         if (Auth::check()) {
@@ -258,7 +259,6 @@ class CartController extends Controller
     }
 
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -270,7 +270,6 @@ class CartController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
 
 
     /**

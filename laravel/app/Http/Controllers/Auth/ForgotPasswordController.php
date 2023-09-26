@@ -21,11 +21,11 @@ class ForgotPasswordController extends Controller
     public function ResetLinkEmail(Request $request)
     {
         $request->validate(['email' => 'required|exists:users,email'],
-        [
-            'email.required' => 'Email không được để trống',
-            'email.exists' => 'Email không tồn tại',
-        ]);
-        $token=strtoupper(Str::random(10));
+            [
+                'email.required' => 'Email không được để trống',
+                'email.exists' => 'Email không tồn tại',
+            ]);
+        $token = strtoupper(Str::random(10));
         $user = User::where('email', $request->email)->first();
         if ($user) {
             $user->update(['reset_password_token' => $token]);

@@ -14,7 +14,8 @@ use function Symfony\Component\String\u;
 class ResetPasswordController extends Controller
 {
 
-    public function showResetForm(Request  $request,$token){
+    public function showResetForm(Request $request, $token)
+    {
         $user = User::where('reset_password_token', $token)->first();
         if (!$user) {
             return redirect()->route('login')->with(['message' => 'Đường dẫn không hợp lệ']);
@@ -23,6 +24,7 @@ class ResetPasswordController extends Controller
         return view('client.auth.reset', compact('user', 'token'));
 
     }
+
     public function resetPassword(Request $request)
     {
         $request->validate([

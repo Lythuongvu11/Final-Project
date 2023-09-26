@@ -10,10 +10,12 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     protected $product;
+
     public function __construct(Product $product)
     {
         $this->product = $product;
     }
+
     public function showByCategory(Category $category)
     {
         $products = Product::where('category_id', $category->id)->paginate(10);
@@ -21,6 +23,7 @@ class ProductController extends Controller
 
         return view('client.home.index', compact('products', 'categories'));
     }
+
     /**
      * Display a listing of the resource.
      */

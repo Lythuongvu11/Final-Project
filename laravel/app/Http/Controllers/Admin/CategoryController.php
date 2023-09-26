@@ -21,8 +21,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories=$this->category->latest('id')->paginate(5);
-        return view('admin.categories.index',compact('categories'));
+        $categories = $this->category->latest('id')->paginate(5);
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -39,8 +39,8 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
-        $dataCreate=$request->all();
-        $category=$this->category->create($dataCreate);
+        $dataCreate = $request->all();
+        $category = $this->category->create($dataCreate);
         return response()->json(['message' => 'Create success']);
 //        return redirect()->route('categories.index')->with(['message'=>'create new category:'.$category->name.' success']);
     }
@@ -59,7 +59,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category=$this->category->findOrFail($id);
+        $category = $this->category->findOrFail($id);
         return response()->json(['category' => $category]);
 //        return view('admin.categories.edit', compact('category', 'parentCategories'));
     }

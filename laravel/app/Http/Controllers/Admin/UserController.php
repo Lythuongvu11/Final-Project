@@ -14,10 +14,11 @@ class UserController extends Controller
 {
     protected $user;
     protected $role;
+
     public function __construct(User $user, Role $role)
     {
-        $this->user=$user;
-        $this->role=$role;
+        $this->user = $user;
+        $this->role = $role;
     }
 
     /**
@@ -25,8 +26,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users=$this->user->latest('id')->paginate(5);
-        return view('admin.users.index',compact('users'));
+        $users = $this->user->latest('id')->paginate(5);
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -44,8 +45,8 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        $dataCreate=$request->all();
-        $dataCreate['password']= Hash::make($request->password);
+        $dataCreate = $request->all();
+        $dataCreate['password'] = Hash::make($request->password);
         $user = $this->user->create($dataCreate);
         return response()->json(['message' => 'Create success']);
 //        return redirect()->route('users.index')->with(['message'=>'Create success']);
@@ -67,11 +68,11 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user=$this->user->findOrFail($id)->load('roles');
+        $user = $this->user->findOrFail($id)->load('roles');
         $roles = $this->role->all()->groupBy('group');
         return response()->json([
-            'user'=>$user,
-            'roles'=>$roles
+            'user' => $user,
+            'roles' => $roles
         ]);
 
 //        return view('admin.users.edit',compact('user','roles'));
@@ -82,14 +83,13 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        $dataUpdate=$request->except('password');
-        $user=$this->user->findOrFail($id)->load('roles');
-        if ($request->password)
-        {
-            $dataUpdate['password']=Hash::make($request->password);
+        $dataUpdate = $request->except('password');
+        $user = $this->user->findOrFail($id)->load('roles');
+        if ($request->password) {
+            $dataUpdate['password'] = Hash::make($request->password);
         }
-        $user ->update($dataUpdate);
-        $user->roles()->sync($dataUpdate['role_ids']??[]);
+        $user->update($dataUpdate);
+        $user->roles()->sync($dataUpdate['role_ids'] ?? []);
 
 //        return to_route('users.index')->with(['message'=>'Update success']);
     }

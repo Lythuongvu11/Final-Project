@@ -20,9 +20,9 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users|max:255',
             'password' => 'required|string|min:8|confirmed',
-            'phone'=> 'required|numeric',
-            'address'=>'nullable|string',
-            'gender'=>'required',
+            'phone' => 'required|numeric',
+            'address' => 'nullable|string',
+            'gender' => 'required',
         ]);
 
         User::create([
@@ -34,7 +34,6 @@ class RegisterController extends Controller
             'gender' => $request->gender == 1 ? 'Nam' : 'Nữ',
         ]);
 
-        // You can customize the redirect route after successful registration
-        return redirect()->route('login')->with(['message'=>'Registration successful! Please log in.']);
+        return redirect()->route('login')->with(['message' => 'Registration successful! Please log in.']);
     }
 }

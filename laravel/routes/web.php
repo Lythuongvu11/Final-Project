@@ -10,7 +10,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\ProductController as ClientProductController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -89,15 +90,15 @@ Route::post('/products/search', [HomeController::class,'search'])->name('product
 Route::get('/detail',function (){
     return view('client.products.detail');
 });
-Route::match(['get', 'post'],'/product-detail/{id}',[\App\Http\Controllers\Client\ProductController::class,'show'])->name('product.show');
+Route::match(['get', 'post'],'/product-detail/{id}',[ClientProductController::class,'show'])->name('product.show');
 //Category
-Route::get('/category/{category}', [\App\Http\Controllers\Client\ProductController::class,'showByCategory'])->name('category.show');
+Route::get('/category/{category}', [ClientProductController::class,'showByCategory'])->name('category.show');
 //Route::get('/category/{categoryId}', [\App\Http\Controllers\Client\HomeController::class,'loadProductsByCategories'])->name('products.category');
 //Cart
-Route::post('/add-to-cart',  [\App\Http\Controllers\Client\CartController::class, 'addToCart'])->name('client.carts.add');
-Route::get('/cart', [\App\Http\Controllers\Client\CartController::class, 'index'])->name('client.cart.show');
+Route::post('/add-to-cart',  [CartController::class, 'addToCart'])->name('client.carts.add');
+Route::get('/cart', [CartController::class, 'index'])->name('client.cart.show');
 
-Route::post('/cart/update', [\App\Http\Controllers\Client\CartController::class, 'updateCart'])->name('update-cart');
-Route::get('/cart/remove/{id}', [\App\Http\Controllers\Client\CartController::class, 'removeFromCart'])->name('client.cart.remove');
+Route::post('/cart/update', [CartController::class, 'updateCart'])->name('update-cart');
+Route::get('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('client.cart.remove');
 // Hiển thị giỏ hàng sau khi đăng nhập
-Route::get('/cart/after-login', [\App\Http\Controllers\Client\CartController::class, 'getCartAfterLogin'])->name('client.cart.getCartAfterLogin');
+Route::get('/cart/after-login', [CartController::class, 'getCartAfterLogin'])->name('client.cart.getCartAfterLogin');

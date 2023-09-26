@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,13 +21,13 @@ class AuthController extends Controller
     }
 
     // Xử lý đăng nhập
-    public function login(Request $request, )
+    public function login(Request $request,)
     {
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        $admin =Admin::where('email', $request->email)->first();
+        $admin = Admin::where('email', $request->email)->first();
         if ($admin && Hash::check($request->password, $admin->password)) {
             // Đăng nhập thành công
             return response()->json([
@@ -36,14 +37,15 @@ class AuthController extends Controller
             ]);
 //            return redirect()->intended('/admin/dashboard');
         } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Login information is incorrect',
-                    'data' => null
-                ]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Login information is incorrect',
+                'data' => null
+            ]);
 //            return redirect()->back()->withErrors(['email' => 'Login information is incorrect']);
         }
     }
+
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
@@ -71,7 +73,7 @@ class AuthController extends Controller
             $admin->update(['reset_password_token' => $token]);
             $mailSent = Mail::send('admin.auth.mail_reset', compact('admin'), function ($email) use ($admin) {
                 $email->subject('Admin SportShop - Reset Password');
-                $email->to($admin->email,$admin->name);
+                $email->to($admin->email, $admin->name);
             });
 
             if ($mailSent) {
@@ -96,10 +98,11 @@ class AuthController extends Controller
         }
     }
 
-    public function showResetPasswordForm(Request  $request,$token){
+    public function showResetPasswordForm(Request $request, $token)
+    {
         $admin = Admin::where('reset_password_token', $token)->first();
         if (!$admin) {
-                return response()->json([
+            return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid path',
             ]);
@@ -109,7 +112,9 @@ class AuthController extends Controller
         return view('admin.auth.reset_password', compact('admin', 'token'));
 
     }
-    public function resetPassword(Request $request){
+
+    public function resetPassword(Request $request)
+    {
         $request->validate([
             'token' => 'required',
             'admin' => 'required|exists:admins,id',
